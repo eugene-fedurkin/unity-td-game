@@ -8,6 +8,15 @@ public class PathLink {
     public List<Vector3> end;
 }
 
+public class Coordinates {
+    public float x;
+    public float z;
+    public Coordinates(Vector3 vector) {
+        x = vector.x;
+        z = vector.z;
+    }
+}
+
 public class PathManager : MonoBehaviour {
     [SerializeField] List<PathLink> path;
 
@@ -15,7 +24,7 @@ public class PathManager : MonoBehaviour {
         
     }
 
-    public Vector3 getNextCoordinate(Vector3 coordinate) {
+    public Coordinates getNextCoordinate(Vector3 coordinate) {
         int currentCoordinateIndex = path.FindIndex(pathLink => pathLink.start.x == coordinate.x && pathLink.start.z == coordinate.z);
         PathLink newPathLink = currentCoordinateIndex > -1 && path[currentCoordinateIndex] != null ? path[currentCoordinateIndex] : null;
 
@@ -23,15 +32,15 @@ public class PathManager : MonoBehaviour {
             return getRandom(newPathLink.end);
         }
 
-        return getRandom(path[0].end);
+        return null;
     }
 
-    Vector3 getRandom(List<Vector3> list) {
+    Coordinates getRandom(List<Vector3> list) {
         if (list.Count == 1) {
-            return list[0];
+            return new Coordinates(list[0]);
         }
 
-        return list[Random.Range(0, list.Count)];
+        return new Coordinates(list[Random.Range(0, list.Count)]);
 
     }
 }

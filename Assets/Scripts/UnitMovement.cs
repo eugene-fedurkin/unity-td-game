@@ -11,23 +11,23 @@ public class UnitMovement : MonoBehaviour {
     
     [SerializeField] PathManager pathManager;
 
-    Vector3 positionTo;
+    Coordinates positionTo;
 
     void Start() {
         speed = 30;
-        updatePositionLink(transform.position);
+        positionTo = pathManager.getNextCoordinate(transform.position);
     }
 
     void Update() {
-        if (transform.position == positionTo) {
-            updatePositionLink(positionTo);
+        if (transform.position.x == positionTo.x && transform.position.z == positionTo.z) {
+            positionTo = pathManager.getNextCoordinate(transform.position);
+            if (positionTo == null) {
+                Destroy(gameObject);
+            }
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, positionTo, speed / 10 * Time.deltaTime);
-    }
-
-    void updatePositionLink(Vector3 position) {
-        Vector3 pos = pathManager.getNextCoordinate(position);
-        positionTo = new Vector3(pos.x, transform.position.y, pos.z);
+        if (positionTo != null) {
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(positionTo.x, transform.position.y, positionTo.z), speed / 10 * Time.deltaTime);
+        }
     }
 }
