@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitMovement : MonoBehaviour {
-    int health;
+    [SerializeField] int health;
     int speed;
     int power;
-    int progress;
     int gold;
-    
+
+    public float progress;
+
     [SerializeField] PathManager pathManager;
 
     Coordinates positionTo;
@@ -29,7 +30,18 @@ public class UnitMovement : MonoBehaviour {
         }
 
         if (positionTo != null) {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(positionTo.x, transform.position.y, positionTo.z), speed / 10 * Time.deltaTime);
+            Vector3 nextPosition = Vector3.MoveTowards(transform.position, new Vector3(positionTo.x, transform.position.y, positionTo.z), speed / 10 * Time.deltaTime);
+            progress += Vector3.Distance(nextPosition, transform.position);
+            transform.position = nextPosition;
+        }
+    }
+
+    public void getDamage(int damage) {
+        Debug.Log("GET DAMAGE");
+        health -= damage;
+        if (health < 0)
+        {
+           Destroy(gameObject);
         }
     }
 
