@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TowerRange : MonoBehaviour {
-    List<UnitMovement> unitsInRange;
     [SerializeField] int interval;
     [SerializeField] int damage;
 
@@ -11,55 +10,35 @@ public class TowerRange : MonoBehaviour {
 
 
     void Start() {
-        unitsInRange = new List<UnitMovement>();
-    }
-
-    void OnTriggerEnter(Collider other) {
-        UnitMovement unit = other.GetComponent<UnitMovement>();
-        if (unit) {
-            unitsInRange.Add(unit);
-        }
-
         StartCoroutine(startAttackCO());
-    }
-
-    void OnTriggerExit(Collider other) {
-        UnitMovement unit = other.GetComponent<UnitMovement>();
-        if (unit) {
-            unitsInRange.Remove(unit);
-        }
     }
 
     IEnumerator startAttackCO() {
         yield return new WaitForSeconds(interval);
-        if (startAttack()) {
-            StartCoroutine(startAttackCO());
-        }
+        startAttack();
+        StartCoroutine(startAttackCO());
     }
 
-    bool startAttack() {
+    void startAttack() {
         if (!targetToDamage) {
-            targetToDamage = getLargestElementUsingFor(unitsInRange);
+            targetToDamage = getLargestElementUsingFor();
         }
 
         if (targetToDamage) {
             targetToDamage.getDamage(damage);
-
-            return true;
         }
-
-        return false;
     }
 
-    UnitMovement getLargestElementUsingFor(List<UnitMovement> sourceArray)
-    {
-        UnitMovement maxElement = sourceArray[0];
-        for (int index = 1; index < sourceArray.Count; index++)
-        {
-            if (sourceArray[index].progress > maxElement.progress) {
-                maxElement = sourceArray[index];
+    UnitMovement getLargestElementUsingFor() {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, transform.localScale.x);
+        UnitMovement maxElement = null;
 
+        for (int index = 1; index < colliders.Length; index++) {
+            UnitMovement unitMovement = colliders[index].GetComponent<UnitMovement>();
+            if (unitMovement && (!maxElement || unitMovement.progress > maxElement.progress)) {
+                maxElement = unitMovement;
             }
+            
         }
 
         return maxElement;
