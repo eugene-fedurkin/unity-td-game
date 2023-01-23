@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitMovement : MonoBehaviour {
+public class UnitManager : MonoBehaviour {
     [SerializeField] int health;
     int speed;
     int power;
     int gold;
+    PathManager pathManager;
 
     public float progress;
 
-    [SerializeField] PathManager pathManager;
 
     Coordinates positionTo;
 
     void Start() {
+        pathManager = FindObjectOfType<PathManager>();
         speed = 30;
         positionTo = pathManager.getNextCoordinate(transform.position);
     }
@@ -43,6 +44,11 @@ public class UnitMovement : MonoBehaviour {
         {
            Destroy(gameObject);
         }
+
+        /*hightlight*/
+        float value = Mathf.Ceil(255 * health / 10);
+        Renderer cubeRenderer = gameObject.GetComponent<Renderer>();
+        cubeRenderer.material.SetColor("_Color", new Color(value, value, value));
     }
 
     void rotateUnit() {
