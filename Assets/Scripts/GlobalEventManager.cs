@@ -8,10 +8,11 @@ public class GlobalEventManager : MonoBehaviour {
     static public UnityEvent<GameObject> onUnitDeath = new UnityEvent<GameObject>();
 
     static public UnityEvent onEndWave = new UnityEvent();
+    
+    static public UnityEvent onBaseDeath = new UnityEvent();
 
 
-    static public void unitCreate(GameObject unit)
-    {
+    static public void unitCreate(GameObject unit) {
         onUnitCreate.Invoke(unit);
     }
 
@@ -19,8 +20,11 @@ public class GlobalEventManager : MonoBehaviour {
         onUnitDeath.Invoke(unit);
     }
 
-    static public void endWave()
-    {
+    static public void endWave() {
         onEndWave.Invoke();
+    }
+
+    static public void baseDeath() {
+        onBaseDeath.Invoke();
     }
 }

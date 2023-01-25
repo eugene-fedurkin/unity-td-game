@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnitBehaviour : MonoBehaviour {
     [SerializeField] int health;
     int speed;
-    int power;
+    public int power;
     int gold;
     PathManager pathManager;
 

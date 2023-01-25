@@ -6,24 +6,22 @@ using UnityEngine.Events;
 
 public class LevelManager : MonoBehaviour {
     [SerializeField] SpawnManager spawnManager;
+    [SerializeField] BaseManager baseManager;
     [SerializeField] GameObject startWaveButton;
-
-    public static UnityEvent onWaveEnd = new UnityEvent();
+    [SerializeField] GameObject resetButton;
 
     private void Awake()
     {
-        GlobalEventManager.onEndWave.AddListener(() => {
-            Debug.Log("onEndWave");
-            startWaveButton.SetActive(true);
-        });
-    }
-
-    public static void waveEnd() {
-        onWaveEnd.Invoke();
+        GlobalEventManager.onEndWave.AddListener(() => startWaveButton.SetActive(true));
+        GlobalEventManager.onBaseDeath.AddListener(() => {
+            resetButton.SetActive(true);
+            Debug.Log("123");
+        } );
     }
 
     void Start() {
         spawnManager.initiateSpawns();
+        baseManager.initiateBase();
     }
 
     public void startWave() {
