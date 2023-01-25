@@ -6,7 +6,7 @@ public class TowerRange : MonoBehaviour {
     [SerializeField] int interval;
     [SerializeField] int damage;
 
-    UnitManager targetToDamage;
+    UnitBehaviour targetToDamage;
 
 
     void Start() {
@@ -29,12 +29,12 @@ public class TowerRange : MonoBehaviour {
         }
     }
 
-    UnitManager getLargestElementUsingFor() {
+    UnitBehaviour getLargestElementUsingFor() {
         Collider[] colliders = Physics.OverlapSphere(transform.position, transform.localScale.x);
-        UnitManager maxElement = null;
+        UnitBehaviour maxElement = null;
 
         for (int index = 1; index < colliders.Length; index++) {
-            UnitManager unitMovement = colliders[index].GetComponent<UnitManager>();
+            UnitBehaviour unitMovement = colliders[index].GetComponent<UnitBehaviour>();
             if (unitMovement && (!maxElement || unitMovement.progress > maxElement.progress)) {
                 maxElement = unitMovement;
             }
