@@ -20,8 +20,20 @@ public class Coordinates {
 public class PathManager : MonoBehaviour {
     [SerializeField] List<PathLink> path;
 
-    void Start() {
-        
+    public Vector3 getStartByIndex(int idx) {
+        if (idx > path.Count) {
+            return path[path.Count - 1].start;
+        }
+
+        return path[idx].start;
+    }
+
+    public Vector3 getEndtByIndex(int idx) {
+        if (idx > path.Count) {
+            return path[path.Count - 1].end[0];
+        }
+
+        return path[idx].end[0];
     }
 
     public Coordinates getNextCoordinate(Vector3 coordinate) {

@@ -5,10 +5,19 @@ using UnityEngine;
 public class BaseManager : MonoBehaviour
 {
     [SerializeField] GameObject basePrefab;
-    [SerializeField] Vector3 basePosition;
+    [SerializeField] int baseInexPosition;
+    [SerializeField] PathManager pathManager;
 
 
     public void initiateBase()  {
-        Instantiate(basePrefab, basePosition, Quaternion.identity);
+        Debug.Log(getPosition(baseInexPosition));
+        GameObject baseObject = Instantiate(basePrefab, getPosition(baseInexPosition), Quaternion.identity);
+        baseObject.transform.parent = gameObject.transform;
+    }
+
+    Vector3 getPosition(int idx) {
+        Vector3 vector = pathManager.getEndtByIndex(idx);
+
+        return new Vector3(vector.x, 1, vector.z);
     }
 }

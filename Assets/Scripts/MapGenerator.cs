@@ -30,13 +30,6 @@ public class MapGenerator : MonoBehaviour
                 generateCell(matrix.arrays[i].cells[j], i, j);
             }
         }
-
-
-        foreach (Cells<MapCellType> cells in matrix.arrays) {
-            foreach(MapCellType cell in cells.cells) {
-
-            }
-        }
     }
 
     void generateCell(MapCellType cell, int x, int z) {
@@ -46,7 +39,6 @@ public class MapGenerator : MonoBehaviour
     }
 
     GameObject getPrefabByType(MapCellType type) {
-        Debug.Log(type);
         switch(type) {
             case MapCellType.Road: return roadPrefab;
             case MapCellType.Grass: return grassPrefab;

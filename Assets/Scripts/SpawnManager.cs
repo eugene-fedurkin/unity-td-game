@@ -10,16 +10,14 @@ public enum UnitType {
 }
 
 [System.Serializable]
-public class Wave
-{
+public class Wave {
     public float interval;
     public List<UnitType> units;
 }
 
 [System.Serializable]
-public class Spawn
-{
-    public Vector3 start;
+public class Spawn {
+    public int startIndex;
     public List<Wave> waves;
 }
 
@@ -27,6 +25,7 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] List<Spawn> spawns;
     [SerializeField] GameObject spawnPrefab;
     [SerializeField] UnitManager unitManager;
+    [SerializeField] PathManager pathManager;
 
     int activeSpawnIndex;
     int activeWaveIndex;
@@ -53,8 +52,9 @@ public class SpawnManager : MonoBehaviour {
     public void initiateSpawns() {
         int idx = 0;
         spawns.ForEach(spawn => {
-            GameObject obj = Instantiate(spawnPrefab, spawn.start, Quaternion.identity);
+            GameObject obj = Instantiate(spawnPrefab, getPositionByIndex(spawn.startIndex), Quaternion.identity);
             obj.name = "Spawn " + idx++;
+            obj.transform.parent = gameObject.transform;
         });
     }
 
@@ -68,7 +68,7 @@ public class SpawnManager : MonoBehaviour {
             yield return new WaitForSeconds(spawn.waves[waveIndex].interval);
             if (spawn.waves[waveIndex].units.Count > unitIndex) {
                 // Debug.Log("UNIT SPAWNED ->"+ spawn.waves[waveIndex].units[unitIndex]);
-                unitManager.initUnit(spawn.waves[waveIndex].units[unitIndex], spawn.start, "waveIndex " + waveIndex + " unitIndex " + unitIndex);
+                unitManager.initUnit(spawn.waves[waveIndex].units[unitIndex], getPositionByIndex(spawn.startIndex), "waveIndex " + waveIndex + " unitIndex " + unitIndex);
                 StartCoroutine(spawnLifeStart(spawn, waveIndex, unitIndex + 1));
             } else {
                 spawnInProcess = false;
@@ -90,5 +90,11 @@ public class SpawnManager : MonoBehaviour {
 
             // activateSpawn(activeSpawnIndex + 1);
         }
+    }
+
+    Vector3 getPositionByIndex(int idx) {
+        Vector3 vector = pathManager.getStartByIndex(idx);
+
+        return new Vector3(vector.x, 1, vector.z);
     }
 }
