@@ -24,15 +24,13 @@ public class UnitManager : MonoBehaviour {
             return;
         }
 
-        if (units.Count == 0)
-        {
+        if (units.Count == 0) {
             // END WAVE
             GlobalEventManager.endWave();
         }
     }
 
-    void registerUnit(GameObject unit)
-    {
+    void registerUnit(GameObject unit) {
         units.Add(unit);
     }
 

@@ -9,8 +9,7 @@ public enum MapCellType
     Grass
 }
 
-public class MapGenerator : MonoBehaviour
-{
+public class MapGenerator : MonoBehaviour {
     [SerializeField] World world;
     [SerializeField] GameDataManager gameDataManager;
 
@@ -18,10 +17,19 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] GameObject roadPrefab;
     [SerializeField] GameObject grassPrefab;
 
-    // Start is called before the first frame update
-    void Start() {
-        Level level = world.getLevel(gameDataManager.getLevel());
-        generateMap(level.map);
+    Matrix<MapCellType> mapMatrix;
+    
+    void Awake() {
+        mapMatrix = world.getLevel(gameDataManager.getLevel()).map;
+        generateMap(mapMatrix);
+    }
+
+    public Vector2Int getMapSize() {
+        return new Vector2Int(mapMatrix.arrays.Count, mapMatrix.arrays[0].cells.Count);
+    }
+
+    public MapCellType getCellType(int x, int z) {
+        return mapMatrix.arrays[x][z];
     }
 
     void generateMap(Matrix<MapCellType> matrix) {
