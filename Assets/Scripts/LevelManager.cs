@@ -1,27 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 
 public class LevelManager : MonoBehaviour {
     [SerializeField] SpawnManager spawnManager;
+    [SerializeField] TowerManager towerManager;
     [SerializeField] BaseManager baseManager;
     [SerializeField] GameObject startWaveButton;
     [SerializeField] GameObject resetButton;
 
-    private void Awake()
-    {
+    private void Awake() {
         GlobalEventManager.onEndWave.AddListener(() => startWaveButton.SetActive(true));
         GlobalEventManager.onBaseDeath.AddListener(() => {
             resetButton.SetActive(true);
-            Debug.Log("123");
-        } );
+        });
+
+        GlobalEventManager.onRefreshLevel.AddListener(() => {
+            init();
+            resetButton.SetActive(false);
+        });
     }
 
     void Start() {
-        spawnManager.initiateSpawns();
-        baseManager.initiateBase();
+        init();
     }
 
     public void startWave() {
@@ -30,5 +30,11 @@ public class LevelManager : MonoBehaviour {
         if (isActivated) {
             startWaveButton.SetActive(false);
         }
+    }
+
+    void init() {
+        spawnManager.refreshSpawns();
+        baseManager.refreshBase();
+        towerManager.destroyAllTowers();
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -30,9 +31,11 @@ public class SpawnManager : MonoBehaviour {
     int activeSpawnIndex;
     int activeWaveIndex;
     bool spawnInProcess;
+    Coroutine currentCo;
 
-    private void Start()
-    {
+    List<GameObject> initedSpawns;
+
+    private void Start() {
         activeSpawnIndex = 0;
         spawnInProcess = false;
     }
@@ -40,7 +43,7 @@ public class SpawnManager : MonoBehaviour {
     public bool triggerSpawn() {
         if (spawns.Count > activeSpawnIndex) {
             if (spawns[activeSpawnIndex].waves.Count > activeWaveIndex) {
-                StartCoroutine(spawnLifeStart(spawns[activeSpawnIndex], activeWaveIndex, 0));
+                currentCo = StartCoroutine(spawnLifeStart(spawns[activeSpawnIndex], activeWaveIndex, 0));
 
                 return true;
             }
@@ -49,12 +52,16 @@ public class SpawnManager : MonoBehaviour {
         return false;
     }
 
-    public void initiateSpawns() {
+    public void refreshSpawns() {
+        destroyAllSpawns();
+
         int idx = 0;
-        spawns.ForEach(spawn => {
+        initedSpawns = spawns.ConvertAll(spawn => {
             GameObject obj = Instantiate(spawnPrefab, getPositionByIndex(spawn.startIndex), Quaternion.identity);
             obj.name = "Spawn " + idx++;
             obj.transform.parent = gameObject.transform;
+
+            return obj;
         });
     }
 
@@ -67,9 +74,8 @@ public class SpawnManager : MonoBehaviour {
         if (spawn.waves.Count > waveIndex) {
             yield return new WaitForSeconds(spawn.waves[waveIndex].interval);
             if (spawn.waves[waveIndex].units.Count > unitIndex) {
-                // Debug.Log("UNIT SPAWNED ->"+ spawn.waves[waveIndex].units[unitIndex]);
                 unitManager.initUnit(spawn.waves[waveIndex].units[unitIndex], getPositionByIndex(spawn.startIndex), "waveIndex " + waveIndex + " unitIndex " + unitIndex);
-                StartCoroutine(spawnLifeStart(spawn, waveIndex, unitIndex + 1));
+                currentCo = StartCoroutine(spawnLifeStart(spawn, waveIndex, unitIndex + 1));
             } else {
                 spawnInProcess = false;
                 activeWaveIndex++;
@@ -78,17 +84,11 @@ public class SpawnManager : MonoBehaviour {
                     activeSpawnIndex++;
                     activeWaveIndex = 0;
                 }
-                // waveFinish.Invoke();
-                //Debug.Log("NEXT WAVE ->");
-                //StartCoroutine(spawnLifeStart(spawn, waveIndex + 1, 0));
             }
         } else {
-            // Debug.Log("ALL WAVES ARE Complete");
             spawnInProcess = false;
             activeSpawnIndex++;
             activeWaveIndex = 0;
-
-            // activateSpawn(activeSpawnIndex + 1);
         }
     }
 
@@ -96,5 +96,20 @@ public class SpawnManager : MonoBehaviour {
         Vector3 vector = pathManager.getStartByIndex(idx);
 
         return new Vector3(vector.x, 1, vector.z);
+    }
+
+    void destroyAllSpawns() {
+        if (initedSpawns != null) {
+            initedSpawns.ForEach(spawn => Destroy(spawn.gameObject));
+            initedSpawns = null;
+            activeSpawnIndex = 0;
+            activeWaveIndex = 0;
+            spawnInProcess = false;
+        }
+
+        if (currentCo != null) {
+            StopCoroutine(currentCo);
+            currentCo = null;
+        }
     }
 }

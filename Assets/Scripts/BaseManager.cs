@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseManager : MonoBehaviour
-{
+public class BaseManager : MonoBehaviour {
     [SerializeField] GameObject basePrefab;
     [SerializeField] int baseInexPosition;
     [SerializeField] PathManager pathManager;
 
+    private GameObject baseObject;
 
-    public void initiateBase()  {
-        GameObject baseObject = Instantiate(basePrefab, getPosition(baseInexPosition), Quaternion.identity);
+    public void refreshBase()  {
+        if (baseObject != null) {
+            Destroy(baseObject.gameObject);
+        }
+
+        baseObject = Instantiate(basePrefab, getPosition(baseInexPosition), Quaternion.identity);
         baseObject.transform.parent = gameObject.transform;
     }
 
