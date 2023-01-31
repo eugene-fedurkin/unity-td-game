@@ -47,8 +47,6 @@ public class GameDataManager : MonoBehaviour
 
         //Close the data stream
         file.Close();
-
-        Debug.Log("Saved " + gameData.level);
     }
 
     public void Load()
@@ -63,7 +61,6 @@ public class GameDataManager : MonoBehaviour
             if (file.Length > 0) {
                 gameData = formatter.Deserialize(file) as GameData;
                 file.Close();
-                Debug.Log("Loaded " + gameData.level);
                 return;
             }
             

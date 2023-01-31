@@ -1,15 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TowerRange : MonoBehaviour {
-    [SerializeField] int interval;
-    [SerializeField] int damage;
+    public int interval;
+    public int damage;
+    public float bulletSpeed;
+    public GameObject bulletPrefab;
 
     UnitBehaviour targetToDamage;
 
-
-    void Start() {
+    public void startTrackUnit() {
         StartCoroutine(startAttackCO());
     }
 
@@ -25,7 +25,7 @@ public class TowerRange : MonoBehaviour {
         }
 
         if (targetToDamage) {
-            targetToDamage.getDamage(damage);
+            createBullet(targetToDamage);
         }
     }
 
@@ -42,5 +42,12 @@ public class TowerRange : MonoBehaviour {
         }
 
         return maxElement;
+    }
+
+    void createBullet(UnitBehaviour targetToDamage) {
+        GameObject bulletGameObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        Bullet bullet = bulletGameObject.GetComponent<Bullet>();
+        bullet.init(targetToDamage.transform, bulletSpeed, damage);
+        bulletGameObject.transform.parent = gameObject.transform;
     }
 }

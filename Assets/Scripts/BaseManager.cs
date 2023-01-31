@@ -10,7 +10,6 @@ public class BaseManager : MonoBehaviour
 
 
     public void initiateBase()  {
-        Debug.Log(getPosition(baseInexPosition));
         GameObject baseObject = Instantiate(basePrefab, getPosition(baseInexPosition), Quaternion.identity);
         baseObject.transform.parent = gameObject.transform;
     }

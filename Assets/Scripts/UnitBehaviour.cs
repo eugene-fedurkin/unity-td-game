@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitBehaviour : MonoBehaviour {
@@ -19,6 +17,7 @@ public class UnitBehaviour : MonoBehaviour {
         pathManager = FindObjectOfType<PathManager>();
         speed = 30;
         positionTo = pathManager.getNextCoordinate(transform.position);
+        rotateUnit();
         GlobalEventManager.unitCreate(gameObject);
     }
 
@@ -40,7 +39,6 @@ public class UnitBehaviour : MonoBehaviour {
     }
 
     public void getDamage(int damage) {
-        Debug.Log("GET DAMAGE");
         health -= damage;
         if (health < 0) {
             unitDeath();
@@ -60,16 +58,5 @@ public class UnitBehaviour : MonoBehaviour {
 
     void rotateUnit() {
         transform.rotation = Quaternion.LookRotation(new Vector3(positionTo.x, transform.position.y, positionTo.z) - new Vector3(transform.position.x, transform.position.y, transform.position.z));
-
-        /*
-        if (positionTo.x < transform.position.x) {
-            transform.eulerAngles = new Vector3(0, -90, 0);
-        } else if (positionTo.x > transform.position.x) { 
-            transform.eulerAngles = new Vector3(0, 90, 0);
-        } else if (positionTo.z > transform.position.z) {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        } else if (positionTo.z < transform.position.z) {
-            transform.eulerAngles = new Vector3(0, 180, 0);
-        }*/
     }
 }

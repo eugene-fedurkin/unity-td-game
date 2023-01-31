@@ -16,4 +16,8 @@ public class Building : MonoBehaviour {
     public void setNormal() {
         mainRenderer.material.color = startColor;
     }
+
+    public void destroy() {
+        Destroy(gameObject);
+    }
 }

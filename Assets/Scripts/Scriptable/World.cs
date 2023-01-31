@@ -12,7 +12,6 @@ public class World : ScriptableObject {
             return levels[level];
         }
 
-        Debug.Log("OUTSIDE LEVELS INDEX ---> " + level);
         return levels[0];
     }
 }

@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class BuildingsGrid : MonoBehaviour {
     [SerializeField] MapGenerator mapGenerator;
+    [SerializeField] TowerManager _towerManager;
 
     readonly Vector3 gridHeight = new Vector3(0, 1.5f, 0);
-    Vector2Int gridSize;
     bool[,] grid;
+    Vector2Int gridSize;
     Building flyingBuilding;
     Camera mainCamera;
 
@@ -43,10 +44,10 @@ public class BuildingsGrid : MonoBehaviour {
 
     public void startPlacingBuilding(Building building) {
         if (flyingBuilding != null) {
-            Destroy(flyingBuilding.gameObject);
+            flyingBuilding.destroy();
         }
 
-        flyingBuilding = Instantiate(building);
+        flyingBuilding = _towerManager.createTower(building);
     }
 
     bool isPlaceTaken(int x, int z) {
@@ -59,6 +60,7 @@ public class BuildingsGrid : MonoBehaviour {
 
     void placeFlyingBuilding(int x, int z) {
         grid[x, z] = true;
+        _towerManager.startTrackUnitFor(flyingBuilding);
         flyingBuilding.setNormal();
         flyingBuilding = null;
     }
