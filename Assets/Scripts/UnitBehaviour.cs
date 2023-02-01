@@ -1,21 +1,18 @@
 using UnityEngine;
 
 public class UnitBehaviour : MonoBehaviour {
-    [SerializeField] int health;
-    int speed;
+    public int health;
+    public int speed;
     public int power;
-    int gold;
+    public int gold;
     PathManager pathManager;
 
     public float progress;
 
     Coordinates positionTo;
 
-    
-
     void Start() {
         pathManager = FindObjectOfType<PathManager>();
-        speed = 30;
         positionTo = pathManager.getNextCoordinate(transform.position);
         rotateUnit();
         GlobalEventManager.unitCreate(gameObject);
@@ -41,6 +38,7 @@ public class UnitBehaviour : MonoBehaviour {
     public void getDamage(int damage) {
         health -= damage;
         if (health < 0) {
+            GlobalEventManager.unitKilled(gameObject);
             unitDeath();
         }
 
@@ -50,8 +48,7 @@ public class UnitBehaviour : MonoBehaviour {
         cubeRenderer.material.SetColor("_Color", new Color(value, value, value));
     }
 
-    void unitDeath()
-    {
+    void unitDeath() {
         GlobalEventManager.unitDeath(gameObject);
         Destroy(gameObject);
     }

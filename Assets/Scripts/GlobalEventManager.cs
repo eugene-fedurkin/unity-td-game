@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class GlobalEventManager : MonoBehaviour {
     static public UnityEvent<GameObject> onUnitCreate = new UnityEvent<GameObject>();
     static public UnityEvent<GameObject> onUnitDeath = new UnityEvent<GameObject>();
+    static public UnityEvent<GameObject> onUnitKilled = new UnityEvent<GameObject>();
     static public UnityEvent onEndWave = new UnityEvent();
     static public UnityEvent onBaseDeath = new UnityEvent();
     static public UnityEvent onRefreshLevel = new UnityEvent();
@@ -14,6 +15,10 @@ public class GlobalEventManager : MonoBehaviour {
 
     static public void unitDeath(GameObject unit) {
         onUnitDeath.Invoke(unit);
+    }
+
+    static public void unitKilled(GameObject unit) {
+        onUnitKilled.Invoke(unit);
     }
 
     static public void endWave() {

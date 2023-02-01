@@ -35,6 +35,13 @@ public class UnitManager : MonoBehaviour {
     }
 
     public void initUnit(UnitType unitType, Vector3 vector, string name) {
-        Instantiate(unitPrefab, vector, Quaternion.identity).name = name;
+        // Add deps from unitType
+        GameObject obj = Instantiate(unitPrefab, vector, Quaternion.identity);
+        obj.name = name;
+        UnitBehaviour unit = obj.GetComponent<UnitBehaviour>();
+        unit.health = 10;
+        unit.speed = 30;
+        unit.power = 5;
+        unit.gold = 1;
     }
 }
