@@ -2,15 +2,22 @@ using System.Collections;
 using UnityEngine;
 
 public class TowerRange : MonoBehaviour {
-    public int interval;
-    public int damage;
-    public float bulletSpeed;
-    public GameObject bulletPrefab;
+    int interval;
+    int damage;
+    float bulletSpeed;
+    GameObject bulletPrefab;
 
     UnitBehaviour targetToDamage;
 
     public void startTrackUnit() {
         StartCoroutine(startAttackCO());
+    }
+
+    public void setConfiguration(int intervalProp, int damageProp, float bulletSpeedProp, GameObject bulletPrefabProp) {
+        interval = intervalProp;
+        damage = damageProp;
+        bulletSpeed = bulletSpeedProp;
+        bulletPrefab = bulletPrefabProp;
     }
 
     IEnumerator startAttackCO() {
@@ -45,6 +52,7 @@ public class TowerRange : MonoBehaviour {
     }
 
     void createBullet(UnitBehaviour targetToDamage) {
+        Debug.Log(gameObject.name);
         GameObject bulletGameObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         Bullet bullet = bulletGameObject.GetComponent<Bullet>();
         bullet.init(targetToDamage.transform, bulletSpeed, damage);

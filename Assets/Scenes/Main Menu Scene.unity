@@ -667,9 +667,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayGame, Assembly-CSharp
-        m_MethodName: startGame
+      - m_Target: {fileID: 952233807}
+        m_TargetAssemblyTypeName: Resume, Assembly-CSharp
+        m_MethodName: onClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1196,7 +1196,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameDataManager: {fileID: 880211880}
   dateTimeText: {fileID: 1931816897}
-  format: MM-dd
 --- !u!1 &1030099135
 GameObject:
   m_ObjectHideFlags: 0

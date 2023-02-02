@@ -6,16 +6,19 @@ public class TowerManager : MonoBehaviour {
 
     List<Building> towers = new List<Building>();
 
+    private int count = 0;
+
     public Building createTower(Building building) {
         Building build = Instantiate(building);
         build.transform.parent = gameObject.transform;
         towers.Add(build);
+        build.name = count.ToString();
 
-        TowerRange tower = getTower(building);
-        tower.bulletPrefab = bulletPrefab;
-        tower.interval = 1;
-        tower.damage = 5;
-        tower.bulletSpeed = 10f;
+        TowerRange tower = getTower(build);
+        tower.name = count.ToString();
+        Debug.Log("build.name = " + build.name + "  " + tower.gameObject.name);
+        tower.setConfiguration(1,5, 10f, bulletPrefab);
+        count++;
 
         return build;
     }
@@ -30,6 +33,6 @@ public class TowerManager : MonoBehaviour {
     }
 
     TowerRange getTower(Building building) {
-        return building.GetComponentInChildren<TowerRange>();
+        return building.gameObject.GetComponentInChildren<TowerRange>();
     }
 }
