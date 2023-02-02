@@ -11,6 +11,7 @@ public class GlobalEventManager : MonoBehaviour {
     static public UnityEvent onBaseDeath = new UnityEvent();
     static public UnityEvent onRefreshLevel = new UnityEvent();
     static public UnityEvent<String, GameSession> onLoadScene = new UnityEvent<String, GameSession>();
+    static public UnityEvent onAllSpawnsFinished = new UnityEvent();
 
     void Awake() {
         DontDestroyOnLoad(this.gameObject);
@@ -42,5 +43,9 @@ public class GlobalEventManager : MonoBehaviour {
 
     static public void loadScene(String sceneName, GameSession session) {
         onLoadScene.Invoke(sceneName, session);
+    }
+
+    static public void allSpawnsFinished() {
+        onAllSpawnsFinished.Invoke();
     }
 }

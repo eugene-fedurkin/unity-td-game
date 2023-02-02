@@ -98,6 +98,14 @@ public class GameDataManager : MonoBehaviour
         return _gameData.getLastSession();
     }
 
+    public void patchSession(int level) {
+        if (_activeSession == null) {
+            return;
+        }
+
+        _activeSession.level = level;
+    }
+
     public void Save() {
         if (_activeSession == null) {
             return;

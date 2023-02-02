@@ -28,17 +28,13 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] UnitManager unitManager;
     [SerializeField] PathManager pathManager;
 
-    int activeSpawnIndex;
-    int activeWaveIndex;
-    bool spawnInProcess;
+    int activeSpawnIndex = 0;
+    int activeWaveIndex = 0;
+    bool spawnInProcess = false;
+    bool spawnsFinished = false;
     Coroutine currentCo;
 
     List<GameObject> initedSpawns;
-
-    private void Start() {
-        activeSpawnIndex = 0;
-        spawnInProcess = false;
-    }
 
     public bool triggerSpawn() {
         if (spawns.Count > activeSpawnIndex) {
@@ -69,6 +65,10 @@ public class SpawnManager : MonoBehaviour {
         return spawnInProcess;
     }
 
+    public bool getSpawnFinished() {
+        return spawnsFinished;
+    }
+
     IEnumerator spawnLifeStart(Spawn spawn, int waveIndex, int unitIndex) {
         spawnInProcess = true;
         if (spawn.waves.Count > waveIndex) {
@@ -83,12 +83,21 @@ public class SpawnManager : MonoBehaviour {
                 if (spawns[activeSpawnIndex].waves.Count <= activeWaveIndex) {
                     activeSpawnIndex++;
                     activeWaveIndex = 0;
+                    checkisAllSpawnsFinished();
                 }
             }
         } else {
             spawnInProcess = false;
             activeSpawnIndex++;
             activeWaveIndex = 0;
+            checkisAllSpawnsFinished();
+        }
+    }
+
+    void checkisAllSpawnsFinished() {
+        if (spawns.Count <= activeSpawnIndex) {
+            // GlobalEventManager.allSpawnsFinished();
+            spawnsFinished = true;
         }
     }
 
@@ -105,6 +114,7 @@ public class SpawnManager : MonoBehaviour {
             activeSpawnIndex = 0;
             activeWaveIndex = 0;
             spawnInProcess = false;
+            spawnsFinished = false;
         }
 
         if (currentCo != null) {

@@ -7,17 +7,24 @@ public class LevelManager : MonoBehaviour {
     [SerializeField] BaseManager baseManager;
     [SerializeField] GameObject startWaveButton;
     [SerializeField] GameObject resetButton;
+    [SerializeField] LevelCompleteController levelCompleteWindow;
 
     private void Awake() {
-        GlobalEventManager.onEndWave.AddListener(() => startWaveButton.SetActive(true));
-        GlobalEventManager.onBaseDeath.AddListener(() => {
-            resetButton.SetActive(true);
+        GlobalEventManager.onEndWave.AddListener(() => {
+            if (spawnManager.getSpawnFinished()) {
+                levelCompleteWindow.gameObject.SetActive(true);
+            } else {
+                startWaveButton.SetActive(true);
+            }
         });
-
+        GlobalEventManager.onBaseDeath.AddListener(() => { resetButton.SetActive(true); });
         GlobalEventManager.onRefreshLevel.AddListener(() => {
             init();
             resetButton.SetActive(false);
         });
+        // GlobalEventManager.onAllSpawnsFinished.AddListener(() => {
+        //     levelCompleteWindow.gameObject.SetActive(true);
+        // });
     }
 
     void Start() {
