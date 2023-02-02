@@ -7,7 +7,6 @@ public class Bullet : MonoBehaviour {
 
     void Update() {
         if (target == null) {
-            Debug.Log("DESTROY");
             Destroy(gameObject);
             return;
         }

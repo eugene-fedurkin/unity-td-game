@@ -16,7 +16,6 @@ public class TowerManager : MonoBehaviour {
 
         TowerRange tower = getTower(build);
         tower.name = count.ToString();
-        Debug.Log("build.name = " + build.name + "  " + tower.gameObject.name);
         tower.setConfiguration(1,5, 10f, bulletPrefab);
         count++;
 

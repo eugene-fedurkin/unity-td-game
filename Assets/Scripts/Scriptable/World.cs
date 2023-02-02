@@ -6,9 +6,8 @@ using UnityEngine;
 public class World : ScriptableObject {
     [SerializeField] List<Level> levels;
 
-    public Level getLevel(int level)
-    {
-        if (levels.Count < level) {
+    public Level getLevel(int level) {
+        if (levels.Count > level) {
             return levels[level];
         }
 

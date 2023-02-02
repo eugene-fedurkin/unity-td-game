@@ -52,7 +52,6 @@ public class TowerRange : MonoBehaviour {
     }
 
     void createBullet(UnitBehaviour targetToDamage) {
-        Debug.Log(gameObject.name);
         GameObject bulletGameObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         Bullet bullet = bulletGameObject.GetComponent<Bullet>();
         bullet.init(targetToDamage.transform, bulletSpeed, damage);

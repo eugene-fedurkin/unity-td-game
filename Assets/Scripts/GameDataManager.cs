@@ -79,6 +79,7 @@ public class GameDataManager : MonoBehaviour
         GlobalEventManager.onLoadScene.AddListener((sceneName, session) => {
             if (sceneName == "Game Scene") {
                 _activeSession = session == null ? new GameSession(0, DateTime.Now) : session;
+                Save();
             } else {
                 Save();
                 _activeSession = null;
@@ -122,7 +123,6 @@ public class GameDataManager : MonoBehaviour
         BinaryFormatter formatter = new BinaryFormatter();
 
         //Create a route from the program to the file
-        Debug.Log(Application.persistentDataPath);
         FileStream file = File.Create(Application.persistentDataPath + "/player.dat");
 
 
