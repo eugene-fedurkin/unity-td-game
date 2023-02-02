@@ -9,15 +9,16 @@ public enum MapCellType
 
 public class MapGenerator : MonoBehaviour {
     [SerializeField] World world;
-    [SerializeField] GameDataManager gameDataManager;
 
     [Header("Map Prefabs")]
     [SerializeField] GameObject roadPrefab;
     [SerializeField] GameObject grassPrefab;
 
     Matrix<MapCellType> mapMatrix;
-    
+    GameDataManager gameDataManager;
+
     void Awake() {
+        gameDataManager = GameDataManager.instance;
         mapMatrix = world.getLevel(gameDataManager.getLevel()).map;
         generateMap(mapMatrix);
     }

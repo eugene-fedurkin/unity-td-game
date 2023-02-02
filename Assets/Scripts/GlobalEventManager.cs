@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +9,11 @@ public class GlobalEventManager : MonoBehaviour {
     static public UnityEvent onEndWave = new UnityEvent();
     static public UnityEvent onBaseDeath = new UnityEvent();
     static public UnityEvent onRefreshLevel = new UnityEvent();
+    static public UnityEvent<String> onLoadScene = new UnityEvent<String>();
+
+    void Awake() {
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     static public void unitCreate(GameObject unit) {
         onUnitCreate.Invoke(unit);
@@ -31,5 +37,9 @@ public class GlobalEventManager : MonoBehaviour {
 
     static public void refreshLevel() {
         onRefreshLevel.Invoke();
+    }
+
+    static public void loadScene(String sceneName) {
+        onLoadScene.Invoke(sceneName);
     }
 }
