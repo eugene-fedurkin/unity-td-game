@@ -61,13 +61,10 @@ public class SpawnManager : MonoBehaviour {
         });
     }
 
-    public bool getActiveSpawnInProcess() {
-        return spawnInProcess;
-    }
-
-    public bool getSpawnFinished() {
-        return spawnsFinished;
-    }
+    public int getWaveIndex() { return activeWaveIndex; }
+    public int getSpawnIndex() { return activeSpawnIndex; }
+    public bool getActiveSpawnInProcess() { return spawnInProcess; }
+    public bool getSpawnFinished() { return spawnsFinished; }
 
     IEnumerator spawnLifeStart(Spawn spawn, int waveIndex, int unitIndex) {
         spawnInProcess = true;
