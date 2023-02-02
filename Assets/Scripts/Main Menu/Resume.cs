@@ -1,23 +1,27 @@
-using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Resume : MonoBehaviour
 {
     [SerializeField] GameDataManager gameDataManager;
     [SerializeField] TextMeshProUGUI dateTimeText;
-    [SerializeField] String format = "MM-dd";
 
+    private GameSession? lastSession;
 
-    void Start()
-    {
-        DateTime? dateTime = gameDataManager.getLastSavedSessionDate();
+    void Start() {
+        lastSession = gameDataManager.getLastSession();
 
-        if (dateTime == null) {
+        if (lastSession == null) {
             gameObject.SetActive(false);
         } else {
             gameObject.SetActive(true);
-            dateTimeText.text = dateTime?.ToString("ddd h:m");
+            dateTimeText.text = lastSession?.lastDatePlayed.ToString("ddd hh:mm");
         }
+    }
+
+    public void onClick() {
+        GlobalEventManager.loadScene("Game Scene", lastSession);
+        SceneManager.LoadScene("Game Scene");
     }
 }

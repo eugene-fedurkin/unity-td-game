@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,7 +10,7 @@ public class GlobalEventManager : MonoBehaviour {
     static public UnityEvent onEndWave = new UnityEvent();
     static public UnityEvent onBaseDeath = new UnityEvent();
     static public UnityEvent onRefreshLevel = new UnityEvent();
-    static public UnityEvent<String> onLoadScene = new UnityEvent<String>();
+    static public UnityEvent<String, GameSession> onLoadScene = new UnityEvent<String, GameSession>();
 
     void Awake() {
         DontDestroyOnLoad(this.gameObject);
@@ -39,7 +40,7 @@ public class GlobalEventManager : MonoBehaviour {
         onRefreshLevel.Invoke();
     }
 
-    static public void loadScene(String sceneName) {
-        onLoadScene.Invoke(sceneName);
+    static public void loadScene(String sceneName, GameSession session) {
+        onLoadScene.Invoke(sceneName, session);
     }
 }

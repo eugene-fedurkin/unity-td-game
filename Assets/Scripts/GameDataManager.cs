@@ -28,11 +28,17 @@ class GameData
         return null;
     }
 
-    public GameSession addSession() {
-        GameSession newSession = new GameSession(0, DateTime.Now);
-        gameSessions.Add(newSession);
+    public void updateSession(GameSession session, DateTime dateTime)
+    {
+        GameSession saveSession = gameSessions.Find(s => s == session);
 
-        return newSession;
+        if (saveSession == null)
+        {
+            gameSessions.Add(session);
+            saveSession = session;
+        }
+        saveSession.lastDatePlayed = dateTime;
+
     }
 
     public GameData clone()
@@ -42,7 +48,7 @@ class GameData
 }
 
 [System.Serializable]
-class GameSession
+public class GameSession
 {
     public int level;
     public DateTime lastDatePlayed;
@@ -58,10 +64,8 @@ public class GameDataManager : MonoBehaviour
 {
 
     public static GameDataManager instance;
-    private static GameData _gameData;
+    private GameData _gameData;
     private GameSession _activeSession;
-    private bool sessionIsNotSaved = true;
-    private bool saveSessionIsAvalible = false;
 
     void Awake() {
         if (instance == null)  {
@@ -72,36 +76,40 @@ public class GameDataManager : MonoBehaviour
         }
         Load();
 
-        GlobalEventManager.onLoadScene.AddListener((sceneName) => {
+        GlobalEventManager.onLoadScene.AddListener((sceneName, session) => {
             if (sceneName == "Game Scene") {
-                saveSessionIsAvalible = true;
+                _activeSession = session == null ? new GameSession(0, DateTime.Now) : session;
+            } else {
+                Save();
+                _activeSession = null;
             }
         });
     }
 
+    public List<GameSession> getSavedSessions() {
+        return _gameData.gameSessions;
+    }
+
     public int getLevel() {
-        return _activeSession.level;
+        return _gameData.getLastSession()?.level ?? 0;
     }
 
-    public DateTime? getLastSavedSessionDate() {
-        return sessionIsNotSaved ? null : _activeSession.lastDatePlayed;
+    public GameSession? getLastSession() {
+        return _gameData.getLastSession();
     }
 
-    public void Save()
-    {
-        if (!saveSessionIsAvalible) {
+    public void Save() {
+        if (_activeSession == null) {
             return;
         }
 
-        _activeSession.lastDatePlayed = DateTime.Now;
-
+        _gameData.updateSession(_activeSession, DateTime.Now);
         //Create a copy of save data
         GameData data = _gameData.clone();
         SaveProcess(data);
     }
 
-    void SaveProcess(GameData data)
-    {
+    void SaveProcess(GameData data) {
         //Create a binary formatter which can read binary files
         BinaryFormatter formatter = new BinaryFormatter();
 
@@ -113,17 +121,13 @@ public class GameDataManager : MonoBehaviour
         //Actually save the data in the file
         formatter.Serialize(file, data);
 
-        sessionIsNotSaved = false;
-
         //Close the data stream
         file.Close();
     }
 
-    public void Load()
-    {
+    public void Load() {
         //Check if the save game file exists
-        if (File.Exists(Application.persistentDataPath + "/player.dat"))
-        {
+        if (File.Exists(Application.persistentDataPath + "/player.dat")) {
             //Create a Binary Formatter
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/player.dat", FileMode.Open);
@@ -132,16 +136,7 @@ public class GameDataManager : MonoBehaviour
                 _gameData = formatter.Deserialize(file) as GameData;
                 GameSession session = _gameData.getLastSession();
 
-                if (session == null)
-                {
-                    session = _gameData.addSession();
-                    sessionIsNotSaved = true;
-                } else
-                {
-                    sessionIsNotSaved = false;
-                }
-
-                _activeSession = session;
+                // _activeSession = session;
                 file.Close();
                 return;
             }
@@ -149,16 +144,14 @@ public class GameDataManager : MonoBehaviour
         }
 
         _gameData = new GameData(new List<GameSession>());
-        _activeSession = _gameData.addSession();
+        // _activeSession = new GameSession(0, DateTime.Now);
     }
 
-    void OnApplicationQuit()
-    {
+    void OnApplicationQuit() {
         Save();
     }
 
-    void OnDisable()
-    {
+    void OnDisable() {
         Save();
     }
 }
