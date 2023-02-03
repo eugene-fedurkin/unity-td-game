@@ -23,17 +23,18 @@ public class Spawn {
 }
 
 public class SpawnManager : MonoBehaviour {
-    [SerializeField] List<Spawn> spawns;
     [SerializeField] GameObject spawnPrefab;
     [SerializeField] UnitManager unitManager;
     [SerializeField] PathManager pathManager;
+    [SerializeField] World world;
+
+    List<Spawn> spawns;
 
     int activeSpawnIndex = 0;
     int activeWaveIndex = 0;
     bool spawnInProcess = false;
     bool spawnsFinished = false;
     Coroutine currentCo;
-
     List<GameObject> initedSpawns;
 
     public bool triggerSpawn() {
@@ -50,6 +51,7 @@ public class SpawnManager : MonoBehaviour {
 
     public void refreshSpawns() {
         destroyAllSpawns();
+        spawns = world.getLevel(GameDataManager.instance.getLevel()).spawns;
 
         int idx = 0;
         initedSpawns = spawns.ConvertAll(spawn => {

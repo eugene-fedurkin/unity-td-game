@@ -5,8 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 [System.Serializable]
-class GameData
-{
+class GameData {
     public List<GameSession> gameSessions;
 
     public GameData(List<GameSession> sessions) {
@@ -28,12 +27,10 @@ class GameData
         return null;
     }
 
-    public void updateSession(GameSession session, DateTime dateTime)
-    {
+    public void updateSession(GameSession session, DateTime dateTime) {
         GameSession saveSession = gameSessions.Find(s => s == session);
 
-        if (saveSession == null)
-        {
+        if (saveSession == null) {
             gameSessions.Add(session);
             saveSession = session;
         }
@@ -41,8 +38,7 @@ class GameData
 
     }
 
-    public GameData clone()
-    {
+    public GameData clone() {
         return new GameData(gameSessions.ConvertAll(s => new GameSession(s.level, s.lastDatePlayed)));
     }
 }
@@ -51,6 +47,8 @@ class GameData
 public class GameSession
 {
     public int level;
+    // public int gold;
+
     public DateTime lastDatePlayed;
 
     public GameSession(int currLevel, DateTime date)
@@ -95,9 +93,11 @@ public class GameDataManager : MonoBehaviour
         return _gameData.getLastSession()?.level ?? 0;
     }
 
+    #nullable enable
     public GameSession? getLastSession() {
         return _gameData.getLastSession();
     }
+    #nullable disable
 
     public void patchSession(int level) {
         if (_activeSession == null) {

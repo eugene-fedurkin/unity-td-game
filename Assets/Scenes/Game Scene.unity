@@ -1221,22 +1221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4fbbda22fcf0040ae98e175a603823, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path:
-  - start: {x: 3, y: 0, z: 0}
-    end:
-    - {x: 3, y: 0, z: 6}
-  - start: {x: 3, y: 0, z: 6}
-    end:
-    - {x: 7, y: 0, z: 6}
-  - start: {x: 7, y: 0, z: 6}
-    end:
-    - {x: 7, y: 0, z: 9}
-  - start: {x: 7, y: 0, z: 9}
-    end:
-    - {x: 9, y: 0, z: 9}
-  - start: {x: 9, y: 0, z: 9}
-    end:
-    - {x: 9, y: 0, z: 0}
+  world: {fileID: 11400000, guid: 04eb2db165a5d414c9ea3f81cb241a87, type: 2}
 --- !u!4 &825484725
 Transform:
   m_ObjectHideFlags: 0
@@ -1454,6 +1439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ce87f9319b97742a0499136e8a10fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathManager: {fileID: 825484724}
   spawnManager: {fileID: 1801440966}
   towerManager: {fileID: 1762265779}
   baseManager: {fileID: 1240052952}
@@ -3255,20 +3241,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce933deb1c9beb5468812fe52a256cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawns:
-  - startIndex: 0
-    waves:
-    - interval: 0.8
-      units: 000000000000000001000000
-    - interval: 0.5
-      units: 010000000100000001000000010000000100000001000000
-  - startIndex: 1
-    waves:
-    - interval: 1
-      units: 010000000100000000000000
   spawnPrefab: {fileID: 6629279144971514668, guid: bd16b5e3d3bb99d4b8bfb8a59b3c1f94, type: 3}
   unitManager: {fileID: 1249048373}
   pathManager: {fileID: 825484724}
+  world: {fileID: 11400000, guid: 04eb2db165a5d414c9ea3f81cb241a87, type: 2}
 --- !u!4 &1801440967
 Transform:
   m_ObjectHideFlags: 0

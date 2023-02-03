@@ -17,15 +17,14 @@ public class SavedGameListController : MonoBehaviour
     {
         sessions.ForEach(session => {
             GameObject button = Instantiate(buttonPrefab);
+            button.transform.SetParent(gameObject.transform);
             MenuItem menuItem = button.GetComponentInChildren<MenuItem>();
             menuItem.setText("Date: " + session.lastDatePlayed.ToString("ddd hh:mm") + "," + "Level: " + session.level); // TODO: move format to config file
             menuItem.changeTextSize(MenuItemTextSize.Small);
-            menuItem.setAction(() =>
-            {
+            menuItem.setAction(() => {
                 GlobalEventManager.loadScene("Game Scene", session);
                 SceneManager.LoadScene("Game Scene");
             });
-            button.transform.parent = gameObject.transform;
         });
     }
 }

@@ -6,7 +6,7 @@ public class LevelCompleteController : MonoBehaviour {
     [SerializeField] TextMeshProUGUI levelCounter;
     void Start() {
         int level = GameDataManager.instance.getLastSession()?.level ?? 0;
-        levelCounter.text = level.ToString();
+        levelCounter.text = "Level: " + level.ToString();
 
         GameDataManager.instance.patchSession(++level);
         GameDataManager.instance.Save();

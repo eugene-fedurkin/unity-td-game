@@ -18,7 +18,13 @@ public class Coordinates {
 }
 
 public class PathManager : MonoBehaviour {
-    [SerializeField] List<PathLink> path;
+    [SerializeField] World world;
+
+    List<PathLink> path;
+
+    public void initDeps() {
+        path = world.getLevel(GameDataManager.instance.getLevel()).path;
+    }
 
     public Vector3 getStartByIndex(int idx) {
         if (idx > path.Count) {

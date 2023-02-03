@@ -2,6 +2,7 @@ using UnityEngine;
 
 
 public class LevelManager : MonoBehaviour {
+    [SerializeField] PathManager pathManager;
     [SerializeField] SpawnManager spawnManager;
     [SerializeField] TowerManager towerManager;
     [SerializeField] BaseManager baseManager;
@@ -11,7 +12,9 @@ public class LevelManager : MonoBehaviour {
 
     private void Awake() {
         GlobalEventManager.onEndWave.AddListener(() => {
+            Debug.Log("onEndWave");
             if (spawnManager.getSpawnFinished()) {
+                Debug.Log(true);
                 levelCompleteWindow.gameObject.SetActive(true);
             } else {
                 startWaveButton.SetActive(true);
@@ -40,6 +43,8 @@ public class LevelManager : MonoBehaviour {
     }
 
     void init() {
+        pathManager.initDeps();
+
         spawnManager.refreshSpawns();
         baseManager.refreshBase();
         towerManager.destroyAllTowers();
