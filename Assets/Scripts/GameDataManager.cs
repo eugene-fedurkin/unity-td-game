@@ -28,7 +28,7 @@ class GameData {
     }
 
     public void updateSession(GameSession session, DateTime dateTime) {
-        GameSession saveSession = gameSessions.Find(s => s == session);
+        GameSession saveSession = gameSessions.Find(s => s.sessionCreated == session.sessionCreated);
 
         if (saveSession == null) {
             gameSessions.Add(session);
@@ -39,28 +39,34 @@ class GameData {
     }
 
     public GameData clone() {
-        return new GameData(gameSessions.ConvertAll(s => new GameSession(s.level, s.lastDatePlayed)));
+        return new GameData(gameSessions.ConvertAll(s => s.clone()));
     }
 }
 
 [System.Serializable]
-public class GameSession
-{
+public class GameSession {
     public int level;
-    // public int gold;
-
+    public int gold;
     public DateTime lastDatePlayed;
+    public readonly DateTime sessionCreated;
 
-    public GameSession(int currLevel, DateTime date)
-    {
+    public static GameSession getNewSession(int currLevel, DateTime date, int currGold) {
+        return new GameSession(currLevel, date, currLevel, DateTime.Now);
+    }
+
+    private GameSession(int currLevel, DateTime date, int currGold, DateTime currSessionCreated) {
+        gold = currGold;
         level = currLevel;
         lastDatePlayed = date;
+        sessionCreated = currSessionCreated;
+    }
+
+    public GameSession clone() {
+        return new GameSession(level, lastDatePlayed, gold, sessionCreated);
     }
 }
 
-public class GameDataManager : MonoBehaviour
-{
-
+public class GameDataManager : MonoBehaviour {
     public static GameDataManager instance;
     private GameData _gameData;
     private GameSession _activeSession;
@@ -76,7 +82,7 @@ public class GameDataManager : MonoBehaviour
 
         GlobalEventManager.onLoadScene.AddListener((sceneName, session) => {
             if (sceneName == "Game Scene") {
-                _activeSession = session == null ? new GameSession(0, DateTime.Now) : session;
+                _activeSession = session == null ? GameSession.getNewSession(0, DateTime.Now, 0) : session;
                 Save();
             } else {
                 Save();
@@ -99,12 +105,12 @@ public class GameDataManager : MonoBehaviour
     }
     #nullable disable
 
-    public void patchSession(int level) {
+    public void patchSession(Action<GameSession> patcher) {
         if (_activeSession == null) {
             return;
         }
 
-        _activeSession.level = level;
+        patcher(_activeSession);
     }
 
     public void Save() {

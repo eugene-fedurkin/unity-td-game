@@ -20,4 +20,5 @@ public class Level : ScriptableObject {
     public Matrix<MapCellType> map;
     public List<Spawn> spawns;
     public List<PathLink> path;
+    public int basePosition;
 }

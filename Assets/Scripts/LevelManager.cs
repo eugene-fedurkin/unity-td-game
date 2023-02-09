@@ -9,12 +9,13 @@ public class LevelManager : MonoBehaviour {
     [SerializeField] GameObject startWaveButton;
     [SerializeField] GameObject resetButton;
     [SerializeField] LevelCompleteController levelCompleteWindow;
+    [SerializeField] GoldCounter goldCounter;
 
     private void Awake() {
         GlobalEventManager.onEndWave.AddListener(() => {
             Debug.Log("onEndWave");
             if (spawnManager.getSpawnFinished()) {
-                Debug.Log(true);
+                Debug.Log("SHOW COMPLETE WINDOW");
                 levelCompleteWindow.gameObject.SetActive(true);
             } else {
                 startWaveButton.SetActive(true);
@@ -44,6 +45,8 @@ public class LevelManager : MonoBehaviour {
 
     void init() {
         pathManager.initDeps();
+        baseManager.initDeps();
+        goldCounter.initDeps();
 
         spawnManager.refreshSpawns();
         baseManager.refreshBase();

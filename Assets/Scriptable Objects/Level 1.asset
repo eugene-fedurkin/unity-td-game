@@ -51,6 +51,7 @@ MonoBehaviour:
   - start: {x: 3, y: 0, z: 6}
     end:
     - {x: 7, y: 0, z: 6}
+    - {x: 3, y: 0, z: 9}
   - start: {x: 7, y: 0, z: 6}
     end:
     - {x: 7, y: 0, z: 9}
@@ -60,3 +61,7 @@ MonoBehaviour:
   - start: {x: 9, y: 0, z: 9}
     end:
     - {x: 9, y: 0, z: 0}
+  - start: {x: 3, y: 0, z: 9}
+    end:
+    - {x: 9, y: 0, z: 9}
+  basePosition: 4

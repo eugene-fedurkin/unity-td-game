@@ -2,17 +2,20 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public enum MenuItemTextSize
-{
+public enum MenuItemTextSize {
     Small,
     Medium,
     Large
 }
 
-public class MenuItem : MonoBehaviour
-{
+public class MenuItem : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI currText;
+    [SerializeField] private GameObject activeIndicator;
     private Action menuAction;
+
+    public void toggleActive(bool active) {
+        activeIndicator.SetActive(active);
+    }
 
     public void setAction(Action action) {
         menuAction = action;
@@ -22,16 +25,13 @@ public class MenuItem : MonoBehaviour
         currText.text = text;
     }
 
-    public void changeTextSize(MenuItemTextSize size)
-    {
+    public void changeTextSize(MenuItemTextSize size) {
         switch (size) {
-            case MenuItemTextSize.Small:
-            {
+            case MenuItemTextSize.Small: {
                 currText.fontSize = 18;
                 return;
             };
-            case MenuItemTextSize.Medium:
-            {
+            case MenuItemTextSize.Medium: {
                 currText.fontSize = 26;
                 return;
             }
@@ -41,8 +41,7 @@ public class MenuItem : MonoBehaviour
     }
 
     public void onClick() {
-        if (menuAction != null)
-        {
+        if (menuAction != null) {
             menuAction();
         }
     }

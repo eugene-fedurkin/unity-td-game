@@ -8,7 +8,7 @@ public class LevelCompleteController : MonoBehaviour {
         int level = GameDataManager.instance.getLastSession()?.level ?? 0;
         levelCounter.text = "Level: " + level.ToString();
 
-        GameDataManager.instance.patchSession(++level);
+        GameDataManager.instance.patchSession(session => session.level++);
         GameDataManager.instance.Save();
     }
 

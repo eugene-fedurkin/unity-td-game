@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseManager : MonoBehaviour {
+    [SerializeField] World world;
     [SerializeField] GameObject basePrefab;
-    [SerializeField] int baseInexPosition;
     [SerializeField] PathManager pathManager;
 
     private GameObject baseObject;
+    int baseInexPosition;
+
+    public void initDeps() {
+        baseInexPosition = world.getLevel(GameDataManager.instance.getLevel()).basePosition;
+    }
 
     public void refreshBase()  {
         if (baseObject != null) {

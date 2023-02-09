@@ -40,7 +40,7 @@ public class SpawnManager : MonoBehaviour {
     public bool triggerSpawn() {
         if (spawns.Count > activeSpawnIndex) {
             if (spawns[activeSpawnIndex].waves.Count > activeWaveIndex) {
-                currentCo = StartCoroutine(spawnLifeStart(spawns[activeSpawnIndex], activeWaveIndex, 0));
+                currentCo = StartCoroutine(spawnLifeStart(spawns[spawns.Count - 1 - activeSpawnIndex], activeWaveIndex, 0));
 
                 return true;
             }

@@ -60,3 +60,4 @@ MonoBehaviour:
   - start: {x: 9, y: 0, z: 9}
     end:
     - {x: 9, y: 0, z: 0}
+  basePosition: 4
