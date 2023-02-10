@@ -31,8 +31,15 @@ class GameData {
         GameSession saveSession = gameSessions.Find(s => s.sessionCreated == session.sessionCreated);
 
         if (saveSession == null) {
-            gameSessions.Add(session);
+            gameSessions.Insert(0, session);
             saveSession = session;
+
+
+            if (gameSessions.Count > 4) { // 5 max session
+                for (int i = 4; i < gameSessions.Count; i++) {
+                    gameSessions.RemoveAt(i);
+                }
+            }
         }
         saveSession.lastDatePlayed = dateTime;
 

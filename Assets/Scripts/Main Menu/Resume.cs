@@ -2,11 +2,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Resume : MonoBehaviour
-{
+public class Resume : MonoBehaviour {
     [SerializeField] GameDataManager gameDataManager;
     [SerializeField] TextMeshProUGUI dateTimeText;
 
+    #nullable enable
     private GameSession? lastSession;
 
     void Start() {

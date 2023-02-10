@@ -1,13 +1,12 @@
 using UnityEngine;
 
 
-public enum MapCellType
-{
+public enum MapCellType {
     Road,
     Grass
 }
 
-public class MapGenerator : MonoBehaviour {
+public class MapGenerator : MapSizeGetter {
     [SerializeField] World world;
 
     [Header("Map Prefabs")]
@@ -23,7 +22,7 @@ public class MapGenerator : MonoBehaviour {
         generateMap(mapMatrix);
     }
 
-    public Vector2Int getMapSize() {
+    public override Vector2Int getMapSize() {
         return new Vector2Int(mapMatrix.arrays.Count, mapMatrix.arrays[0].cells.Count);
     }
 

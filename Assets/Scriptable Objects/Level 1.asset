@@ -65,3 +65,4 @@ MonoBehaviour:
     end:
     - {x: 9, y: 0, z: 9}
   basePosition: 4
+  previewForSelect: {fileID: 2331034344010599781, guid: 7ad8aeb07a8d07049b65118dada6a4c3, type: 3}

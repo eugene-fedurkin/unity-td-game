@@ -21,4 +21,5 @@ public class Level : ScriptableObject {
     public List<Spawn> spawns;
     public List<PathLink> path;
     public int basePosition;
+    public GameObject previewForSelect;
 }

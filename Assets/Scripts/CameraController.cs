@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
-{
-    public MapGenerator mapSize;
+public class MapSizeGetter : MonoBehaviour {
+    public virtual Vector2Int getMapSize() { return new Vector2Int(0, 0); }
+}
+
+public class CameraController : MonoBehaviour {
+    public MapSizeGetter mapSize;
     public Transform cameraTransform;
     public float movementSpeed;
     public float movementTime;
@@ -17,22 +20,20 @@ public class CameraController : MonoBehaviour
 
     readonly Vector3 planePosition = new Vector3(0, 1f, 0);
 
-    void Start()
-    {
+    void Start() {
         newPosition = transform.position;
         newZoom = cameraTransform.localPosition;
         cameraRestriction = mapSize.getMapSize();
+        Debug.Log(mapSize.getMapSize());
     }
 
-    void Update()
-    {
+    void Update() {
         handleMovementInput();
         handleMouseInput();
     }
 
     void handleMouseInput() {
-        if (Input.GetMouseButtonDown(0))
-        {
+        if (Input.GetMouseButtonDown(0)) {
             Plane plane = new Plane(Vector3.up, planePosition);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -42,13 +43,11 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(0))
-        {
+        if (Input.GetMouseButton(0)) {
             Plane plane = new Plane(Vector3.up, planePosition);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (plane.Raycast(ray, out float entry))
-            {
+            if (plane.Raycast(ray, out float entry)) {
                 dragCurrentPosition = ray.GetPoint(entry);
 
                 updateNewPosition(transform.position + dragStartPosition - dragCurrentPosition);
@@ -82,14 +81,12 @@ public class CameraController : MonoBehaviour
         cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
     }
 
-    void updateNewZoom(Vector3 vector)
-    {
+    void updateNewZoom(Vector3 vector) {
         float zoomValue = vector.y > 13f ? 13f : vector.y < 0f ? 0f : vector.y;
         newZoom = new Vector3(0, zoomValue, -zoomValue);
     }
 
-    void updateNewPosition(Vector3 vector)
-    {
+    void updateNewPosition(Vector3 vector) {
         float x = vector.x < 0f ? 0f : vector.x > cameraRestriction.x ? cameraRestriction.x : vector.x;
         float z = vector.z < 0f ? 0f : vector.z > cameraRestriction.y ? cameraRestriction.y : vector.z;
         newPosition = new Vector3(x, vector.y, z);
