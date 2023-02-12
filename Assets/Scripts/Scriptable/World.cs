@@ -15,4 +15,8 @@ public class World : ScriptableObject {
 
         return levels[0];
     }
+
+    public int levelsCount() {
+        return levels.Count;
+    }
 }
